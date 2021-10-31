@@ -14,33 +14,52 @@ function countTo(start = 1, num) {
     trillions: [],
   };
 
-  function pushToArr(number, ind, name) {
+  function pushToArr(number, index, name) {
     const plural = name + "s";
-    const cD = number[count];
+    const currentDigit = number[index];
 
     switch (true) {
-      case ind == 0 || ind % 3 == 0:
-        numArrs[`${plural}`].push(ones[cD] + ` ${name}`);
+      case index == 0 || index % 3 == 0:
+        if (index < 3) {
+          if (currentDigit == "0") {
+            break;
+          }
+          numArrs[plural].push(ones[currentDigit]);
+        } else {
+          if (currentDigit != "0") {
+            numArrs[plural].push(name);
+            numArrs[plural].push(ones[currentDigit]);
+          }
+        }
         break;
 
-      case ind == 1 || (ind - 1) % 3 == 0:
-        if (cD == "0") {
+      case index == 1 || (index - 1) % 3 == 0:
+        if (currentDigit == "0") {
           break;
         }
-        if (cD == "1") {
-          let ones = number[count - 1];
-          numArrs[`${plural}`].pop();
-          numArrs[`${plural}`].push(teens[ones]);
+        if (currentDigit == "1") {
+          let ones = number[index - 1];
+          numArrs[plural].pop();
+          numArrs[plural].push(teens[ones]);
         } else {
-          numArrs[`${plural}`].push(tens[cD]);
+          numArrs[plural].push(tens[currentDigit]);
         }
         break;
 
-      case ind == 2 || (ind - 2) % 3 == 0:
-        if (cD == "0") {
-          numArrs[`${plural}`].push(ones[cD]);
+      case index == 2 || (index - 2) % 3 == 0:
+        if (currentDigit == "0" && number[0] == "0" && number[1] == 0) {
+          break;
         } else {
-          numArrs[`${plural}`].push(ones[cD] + " hundred");
+          if (index == 2) {
+            if (number[0] == "0" && number[1] == "0") {
+              break;
+            }
+            numArrs["hundreds"].push("and");
+          }
+          if (currentDigit != "0") {
+            numArrs[plural].push("hundred");
+            numArrs[plural].push(ones[currentDigit]);
+          }
         }
         break;
     }
@@ -96,162 +115,47 @@ function countTo(start = 1, num) {
     };
 
     let currNum = i.toString();
+    let numLength = currNum.length;
     let revNum = reverseString(currNum);
 
     // get value of each digit in currNum.
-    let count = 0; // iterate digit by digit through revent numberl
-    for (let digit = 0; digit < currNum.length; digit++) {
-      let curDig = revNum[count]; // current number in iteration.
-
+    let place = 0; // iterate digit by digit through current number
+    for (let digit = 0; digit < numLength; digit++) {
       switch (true) {
         // hundreds
-        case count < 3:
-          pushToArr(revNum, count, "hundred");
+        case place < 3:
+          pushToArr(revNum, place, "hundred");
           break;
         // thousands
-        case count < 6:
-          pushToArr(revNum, count, "thousand");
+        case place < 6:
+          pushToArr(revNum, place, "thousand");
+
           break;
         // millions
-        case count < 9:
-          pushToArr(revNum, count, "million");
+        case place < 9:
+          pushToArr(revNum, place, "million");
           break;
         // trillions
         default:
-          pushToArr(revNum, count, "trillion");
+          pushToArr(revNum, place, "trillion");
           break;
-        // case 0:
-        //   numArrs["hundreds"].push(ones[curDig]);
-        //   break;
-
-        // case 1:
-        //   if (curDig == "0") {
-        //     break;
-        //   }
-        //   if (curDig == "1") {
-        //     let ones = revNum[count - 1];
-        //     numArrs["hundreds"].pop();
-        //     numArrs["hundreds"].push(teens[ones]);
-        //   } else {
-        //     numArrs["hundreds"].push(tens[curDig]);
-        //   }
-        //   break;
-
-        // case 2:
-        //   if (curDig == "0") {
-        //     numArrs["hundreds"].push(ones[curDig]);
-        //   } else {
-        //     numArrs["hundreds"].push(ones[curDig] + " hundred");
-        //   }
-        //   break;
-
-        // // thousands
-        // case 3:
-        //   numArrs["thousands"].push(ones[curDig] + " thousand,");
-        //   break;
-
-        // case 4:
-        //   if (curDig == "0") {
-        //     break;
-        //   }
-        //   if (curDig == "1") {
-        //     let ones = revNum[count - 1];
-        //     numArrs["thousands"].pop();
-        //     numArrs["thousands"].push(teens[ones]);
-        //   } else {
-        //     numArrs["thousands"].push(tens[curDig]);
-        //   }
-        //   break;
-
-        // case 5:
-        //   if (curDig == "0") {
-        //     numArrs["thousands"].push(ones[curDig]);
-        //   } else {
-        //     numArrs["thousands"].push(ones[curDig] + " hundred");
-        //   }
-        //   break;
-
-        // // millions
-        // case 6:
-        //   numArrs["millions"].push(ones[curDig] + " million ");
-        //   break;
-
-        // case 7:
-        //   if (curDig == "1") {
-        //     let ones = revNum[count - 1];
-        //     numArrs["millions"].pop();
-        //     numArrs["millions"].push(teens[ones]);
-        //   } else {
-        //     numArrs["millions"].push(tens[curDig]);
-        //   }
-        //   break;
-
-        // case 8:
-        //   if (curDig == "0") {
-        //     numArrs["millions"].push(ones[curDig]);
-        //   } else {
-        //     numArrs["millions"].push(ones[curDig] + " hundred");
-        //   }
-        //   break;
-
-        // // billions
-        // case 9:
-        //   numArrs["billions"].push(ones[curDig] + " billion,");
-        //   break;
-
-        // case 10:
-        //   if (curDig == "1") {
-        //     let ones = revNum[count - 1];
-        //     numArrs["billions"].pop();
-        //     numArrs["billions"].push(teens[ones]);
-        //   } else {
-        //     numArrs["billions"].push(tens[curDig]);
-        //   }
-        //   break;
-
-        // case 11:
-        //   if (curDig == "0") {
-        //     numArrs["billions"].push(ones[curDig]);
-        //   } else {
-        //     numArrs["billions"].push(ones[curDig] + " hundred");
-        //   }
-        //   break;
-
-        // // trillions
-        // case 12:
-        //   numArrs["trillions"].push(ones[curDig] + " trillion,");
-        //   break;
-
-        // case 13:
-        //   if (curDig == "1") {
-        //     let ones = revNum[count - 1];
-        //     numArrs["trillions"].pop();
-        //     numArrs["trillions"].push(teens[ones]);
-        //   } else {
-        //     numArrs["trillions"].push(tens[curDig]);
-        //   }
-        //   break;
-
-        // case 14:
-        //   if (curDig == "0") {
-        //     numArrs["trillions"].push(ones[curDig]);
-        //   } else {
-        //     numArrs["trillions"].push(ones[curDig] + " hundred");
-        //   }
-        //   break;
       }
-      count++;
+      place++;
     }
-    let hund = numArrs["hundreds"].reverse().join(" ");
-    let thou = numArrs["thousands"].reverse().join(" ");
-    let mil = numArrs["millions"].reverse().join(" ");
-    let bil = numArrs["billions"].reverse().join(" ");
-    let tril = numArrs["trillions"].reverse().join(" ");
 
-    let returnNum = tril + bil + mil + thou + hund;
+    // add "and". Ex 'Four thousand "and" twenty'
 
-    console.log(returnNum);
+    let hund = numArrs["hundreds"].reverse();
+    let thou = numArrs["thousands"].reverse();
+    let mil = numArrs["millions"].reverse();
+    let bil = numArrs["billions"].reverse();
+    let tril = numArrs["trillions"].reverse();
+
+    // let returnNum = tril.concat(bil).concat(mil).concat(thou).concat(hund);
+    let returnArr = [tril, bil, mil, thou, hund];
+    let returnNum = returnArr.flat();
+    console.log(returnNum.join(" "));
   }
 }
 
-countTo(1, 1000);
+countTo(1, 1000001);
