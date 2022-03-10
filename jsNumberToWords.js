@@ -3,6 +3,20 @@
 // function will count from. The default value of the second parameter will
 // match the value of the first.
 
+const args = process.argv.slice(2);
+
+const getNum = (args) => {
+  if (args.length > 2) {
+    console.log('Please enter a number to count to. Optionally a second argument can be added as a number to count from.');
+    return;
+  } 
+  return args[0];
+}
+
+const getStart = (args) => {
+  if (args.length < 2) return args[0];
+}
+
 function numToWords(num, start = num) {
   if (num > 1000000000000000)
   if (numLength > 16) {
@@ -206,3 +220,8 @@ function numToWords(num, start = num) {
     console.log(returnNum.join(' '));
   }
 }
+
+const num = getNum(args);
+const start = getStart(args);
+
+numToWords(num, start);
