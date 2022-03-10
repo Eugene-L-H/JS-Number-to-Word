@@ -15,6 +15,7 @@ const getNum = (args) => {
 
 const getStart = (args) => {
   if (args.length < 2) return args[0];
+  return args[1];
 }
 
 function numToWords(num, start = num) {
@@ -223,5 +224,6 @@ function numToWords(num, start = num) {
 
 const num = getNum(args);
 const start = getStart(args);
-
+console.log(args);
+console.log('start', start);
 numToWords(num, start);
