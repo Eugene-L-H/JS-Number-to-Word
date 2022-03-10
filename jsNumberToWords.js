@@ -3,8 +3,6 @@
 // const will count from. The default value of the second parameter will
 // match the value of the first.
 
-const args = process.argv.slice(2);
-
 const getNum = (args) => {
   if (args.length > 2) {
     console.log('Please enter a number to count to. Optionally a second argument can be added as a number to count from.');
@@ -18,7 +16,7 @@ const getStart = (args) => {
   return args[1];
 };
 
-const numToWords = (num, start = num) => {
+const numToWords = (num, start) => {
   if (num > 1000000000000000)
     if (num.Length > 16) {
       console.log(
@@ -157,6 +155,8 @@ const numToWords = (num, start = num) => {
   ];
 
   // iterate through num.
+  console.log('start before loop', start);
+  console.log('num before loop', num);
   for (let i = start; i <= num; i++) {
     numArrs = {
       hundreds: [],
@@ -219,11 +219,15 @@ const numToWords = (num, start = num) => {
     let returnArr = [quad, tril, bil, mil, thou, hund];
     let returnNum = returnArr.flat();
     returnNum = returnNum. join(' ');
-    return returnNum.replace(/  +/g, ' '); // Remove any extra spaces.
+    console.log(returnNum.replace(/  +/g, ' ')); // Remove any extra spaces.
   }
 };
 
 // Initialize
+const args = process.argv.slice(2);
+
 const num = getNum(args);
 const start = getStart(args);
-console.log(numToWords(num, start));
+
+numToWords(num, start);
+
