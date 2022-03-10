@@ -1,6 +1,6 @@
-// numToWords function will return the text value of whatever number provided by
+// numToWords const will return the text value of whatever number provided by
 // the user in the first parameter. The second parameter dictates where the
-// function will count from. The default value of the second parameter will
+// const will count from. The default value of the second parameter will
 // match the value of the first.
 
 const args = process.argv.slice(2);
@@ -9,30 +9,30 @@ const getNum = (args) => {
   if (args.length > 2) {
     console.log('Please enter a number to count to. Optionally a second argument can be added as a number to count from.');
     return;
-  } 
+  }
   return args[0];
-}
+};
 
 const getStart = (args) => {
   if (args.length < 2) return args[0];
   return args[1];
-}
+};
 
-function numToWords(num, start = num) {
+const numToWords = (num, start = num) => {
   if (num > 1000000000000000)
-  if (numLength > 16) {
-    console.log(
-      `A number of that size is too large. Must be 16 digits or less. Your number is ${numLength} digits long.`
-    );
-    return;
-  }
+    if (num.Length > 16) {
+      console.log(
+        `A number of that size is too large. Must be 16 digits or less. Your number is ${num.Length} digits long.`
+      );
+      return;
+    }
   // Used to reverse "num" in order to iterate backwards from the ones position
-  function reverseString(str) {
+  const reverseString = (str) => {
     const splStr = str.split('');
     const revSpl = splStr.reverse();
     const reverse = revSpl.join('');
     return reverse;
-  }
+  };
 
   // words that will comprise final written number are stored here
   let numArrs = {
@@ -44,77 +44,77 @@ function numToWords(num, start = num) {
     quadrillions: [],
   };
 
-  // This function generates a word based on each digit in the number and pushes
+  // This const generates a word based on each digit in the number and pushes
   // that word to numArrs
-  function pushToArr(number, index, name) {
+  const pushToArr = (number, index, name) => {
     const plural = name + 's';
     const currentDigit = number[index];
 
     switch (true) {
-      // Ones
-      case index == 0 || index % 3 == 0:
-        if (index == 0) {
-          if (currentDigit == '0') {
-            break;
-          }
-          numArrs[plural].push(ones[currentDigit]);
-        } else {
-          // omit the place name if there are no numbers in the place value
-          // group.
-          if (
-            currentDigit == '0' &&
-            number[index + 1] == '0' &&
-            number[index + 2] == '0'
-          ) {
-            break;
-          }
-          numArrs[plural].push(name);
-          // If currentDigit equals 0 nothing will be pushed.
-          if (currentDigit != '0') {
-            numArrs[plural].push(ones[currentDigit]);
-          }
+    // Ones
+    case index === 0 || index % 3 === 0:
+      if (index === 0) {
+        if (currentDigit === '0') {
+          break;
         }
-        break;
+        numArrs[plural].push(ones[currentDigit]);
+      } else {
+        // omit the place name if there are no numbers in the place value
+        // group.
+        if (
+          currentDigit === '0' &&
+            number[index + 1] === '0' &&
+            number[index + 2] === '0'
+        ) {
+          break;
+        }
+        numArrs[plural].push(name);
+        // If currentDigit equals 0 nothing will be pushed.
+        if (currentDigit !== '0') {
+          numArrs[plural].push(ones[currentDigit]);
+        }
+      }
+      break;
 
       // Tens
-      case index == 1 || (index - 1) % 3 == 0:
-        if (currentDigit == '0') {
-          break;
-        }
-        // Swap out word in ones position and replace with word from the 'teens' array.
-        if (currentDigit == '1') {
-          let ones = number[index - 1];
-          if (numArrs[plural][ones] != name) {
-            numArrs[plural].pop();
-          }
-          numArrs[plural].push(teens[ones]);
-        } else {
-          numArrs[plural].push(tens[currentDigit]);
-        }
+    case index === 1 || (index - 1) % 3 === 0:
+      if (currentDigit === '0') {
         break;
+      }
+      // Swap out word in ones position and replace with word from the 'teens' array.
+      if (currentDigit === '1') {
+        let ones = number[index - 1];
+        if (numArrs[plural][ones] !== name) {
+          numArrs[plural].pop();
+        }
+        numArrs[plural].push(teens[ones]);
+      } else {
+        numArrs[plural].push(tens[currentDigit]);
+      }
+      break;
 
       // Hundreds
-      case index == 2 || (index - 2) % 3 == 0:
-        if (index == 2) {
-          // add 'and' after the ones and tens words in the 'hundreds' place
-          // value group.
-          if (number[0] != '0' || number[1] != '0') {
-            numArrs[plural].push('and');
-          }
-          if (currentDigit != '0') {
-            numArrs[plural].push('hundred');
-            numArrs[plural].push(ones[currentDigit]);
-          }
-          break;
-        } else if (currentDigit == '0') {
-          break;
-        } else {
+    case index === 2 || (index - 2) % 3 === 0:
+      if (index === 2) {
+        // add 'and' after the ones and tens words in the 'hundreds' place
+        // value group.
+        if (number[0] !== '0' || number[1] !== '0') {
+          numArrs[plural].push('and');
+        }
+        if (currentDigit !== '0') {
           numArrs[plural].push('hundred');
           numArrs[plural].push(ones[currentDigit]);
         }
         break;
+      } else if (currentDigit === '0') {
+        break;
+      } else {
+        numArrs[plural].push('hundred');
+        numArrs[plural].push(ones[currentDigit]);
+      }
+      break;
     }
-  }
+  };
 
   // these 3 lists contain the words that will be indexed to match the digits
   const ones = [
@@ -175,34 +175,34 @@ function numToWords(num, start = num) {
     let place = 0; // iterate digit by digit through current number.
     for (let digit = 0; digit < numLength; digit++) {
       switch (true) {
-        // hundreds
-        case place < 3:
-          pushToArr(revNum, place, 'hundred');
-          break;
+      // hundreds
+      case place < 3:
+        pushToArr(revNum, place, 'hundred');
+        break;
         // thousands
-        case place < 6:
-          pushToArr(revNum, place, 'thousand');
+      case place < 6:
+        pushToArr(revNum, place, 'thousand');
 
-          break;
+        break;
         // millions
-        case place < 9:
-          pushToArr(revNum, place, 'million');
-          break;
+      case place < 9:
+        pushToArr(revNum, place, 'million');
+        break;
 
         // billions
-        case place < 12:
-          pushToArr(revNum, place, 'billion');
-          break;
+      case place < 12:
+        pushToArr(revNum, place, 'billion');
+        break;
 
         // trillions
-        case place < 15:
-          pushToArr(revNum, place, 'trillion');
-          break;
+      case place < 15:
+        pushToArr(revNum, place, 'trillion');
+        break;
 
         // quadrillion
-        default:
-          pushToArr(revNum, place, 'quadrillion');
-          break;
+      default:
+        pushToArr(revNum, place, 'quadrillion');
+        break;
       }
       place++;
     }
@@ -218,12 +218,12 @@ function numToWords(num, start = num) {
     // Move sub-arrays into one and combine contents.
     let returnArr = [quad, tril, bil, mil, thou, hund];
     let returnNum = returnArr.flat();
-    console.log(returnNum.join(' '));
+    returnNum = returnNum. join(' ');
+    return returnNum.replace(/  +/g, ' '); // Remove any extra spaces.
   }
-}
+};
 
+// Initialize
 const num = getNum(args);
 const start = getStart(args);
-console.log(args);
-console.log('start', start);
-numToWords(num, start);
+console.log(numToWords(num, start));
